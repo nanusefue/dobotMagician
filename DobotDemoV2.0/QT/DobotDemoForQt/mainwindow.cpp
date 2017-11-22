@@ -90,6 +90,8 @@ void MainWindow::onChangedMode()
 
 void MainWindow::onConnectDobot()
 {
+
+    ConnectDobot(0, 115200);
     //connect dobot
     if (!connectStatus) {
         if (ConnectDobot(0, 115200) != DobotConnect_NoError) {
