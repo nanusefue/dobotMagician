@@ -215,6 +215,7 @@ DIST          = /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/spec_pre.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/spec_post.prf \
+		../DobotDemoForQt/.qmake.stash \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -408,6 +409,7 @@ Makefile: ../DobotDemoForQt/DobotDemoForQt.pro /home/nanu/Qt5/5.9.2/gcc_64/mkspe
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/qt_config.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/toolchain.prf \
 		/home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/default_pre.prf \
@@ -596,6 +598,7 @@ Makefile: ../DobotDemoForQt/DobotDemoForQt.pro /home/nanu/Qt5/5.9.2/gcc_64/mkspe
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/qt_config.prf:
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/linux-g++/qmake.conf:
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/exclusive_builds.prf:
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/toolchain.prf:
 /home/nanu/Qt5/5.9.2/gcc_64/mkspecs/features/default_pre.prf:
