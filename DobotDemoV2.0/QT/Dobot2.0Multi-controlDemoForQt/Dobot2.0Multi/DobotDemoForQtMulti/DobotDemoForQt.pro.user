@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
+<<<<<<< HEAD:DobotDemoV2.0/QT/Dobot2.0Multi-control DemoForQt/Dobot2.0Multi/DobotDemoForQtMulti/DobotDemoForQt.pro.user
+<!-- Written by QtCreator 4.4.1, 2017-11-19T17:07:29. -->
+=======
 <!-- Written by QtCreator 4.4.1, 2017-11-19T19:19:43. -->
+>>>>>>> d8be67d90c55c23428e0dafa2523cf2da6e8e9c2:DobotDemoV2.0/QT/Dobot2.0Multi-controlDemoForQt/Dobot2.0Multi/DobotDemoForQtMulti/DobotDemoForQt.pro.user
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
