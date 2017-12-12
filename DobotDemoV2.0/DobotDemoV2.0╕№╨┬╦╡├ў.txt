@@ -1,0 +1,14 @@
+  DobotDemoForMagician重大更新：
+  1、修改了DobotDll的架构，使其完全支持多线程；
+  2、DobotDll完全不依赖后台任务：PeriodicTask；
+  3、提供了DobotDll的最新源码；
+  4、提供了Windows、Linux、Mac下的预编译库；
+  5、增加的Java的Demo工程。
+  6、更新arduino demo。
+  7、更新C# demo，新增arc使用示例和EIO复用示例；
+  8、新增IOSdemo；
+  9、新增Androiddemo；
+  10、更新Pythondemo：1）使用最新DLL；2）改用队列模式，PTP运动；3）配合最新的demo说明书。
+
+  Dobot API文档更新：
+  针对新版本动态库，全面支持多线程，无需调用API背景任务，因此文档中去掉了API背景任务的说明。
