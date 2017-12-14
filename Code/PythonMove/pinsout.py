@@ -7,6 +7,7 @@ class io():
 
     def __init__(self):
         GPIO.setmode(GPIO.BCM)
+        GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)  
         self.channel=24
         self.channel = GPIO.wait_for_edge(self.channel, GPIO.RISING, timeout=5000)
         GPIO.add_event_detect(self.channel, GPIO.RISING)  # add rising edge detection on a channel
