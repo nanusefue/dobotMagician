@@ -50,6 +50,16 @@ typedef struct tagRingBuffer {
 #endif
 #endif
 
+__STATIC_INLINE void __disable_irq(void)
+{
+	return __disable_irq();
+
+}
+__STATIC_INLINE void __enable_irq(void)
+{
+	return __enable_irq();
+}
+
 /*********************************************************************************************************
 ** Function name:       RingBufferInit
 ** Descriptions:        RingBuffer init
@@ -57,6 +67,8 @@ typedef struct tagRingBuffer {
 ** Output parameters:   None
 ** Returned value:      None
 *********************************************************************************************************/
+
+
 extern void RingBufferInit(RingBuffer *ringBuffer, void *addr, uint32_t capacity, int32_t elemSize);
 
 /*********************************************************************************************************

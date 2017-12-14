@@ -97,7 +97,7 @@ void RingBufferDequeue(RingBuffer *ringBuffer, void *addr)
     }
     ringBuffer->readAddress = (ringBuffer->readAddress + 1) % ringBuffer->capacity;
 #ifdef __arm__
-    __disable_irq();
+	__disable_irq();
 #endif
     ringBuffer->count--;
     if (ringBuffer->count == 0) {
