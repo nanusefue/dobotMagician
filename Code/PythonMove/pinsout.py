@@ -20,3 +20,6 @@ class io:
 
     def detach():
         GPIO.remove_event_detect(self.channel)
+
+if __name__ == "__main__":
+    R = io()
