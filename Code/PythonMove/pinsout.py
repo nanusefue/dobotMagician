@@ -6,6 +6,7 @@ import time
 class io(): 
 
     def __init__(self):
+        self.channel=24
         self.channel = GPIO.wait_for_edge(self.channel, GPIO_RISING, timeout=5000)
         GPIO.add_event_detect(self.channel, GPIO.RISING)  # add rising edge detection on a channel
         GPIO.add_event_detect(self.channel, GPIO.RISING, callback=action)  # add rising edge detection on a channel
