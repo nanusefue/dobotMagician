@@ -1,6 +1,9 @@
 # dobotMagician
 Python lib for Dobot Magician 
 
+Install
+Qt5-default
+
 
 Python Script
 1- Connect Raspberry Pi using serial port
