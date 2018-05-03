@@ -3,6 +3,9 @@ Python lib for Dobot Magician
 
 Install
 Qt5-default
+Qt5Serial-Dev
+qmake DobotDll.pro
+make
 
 
 Python Script
