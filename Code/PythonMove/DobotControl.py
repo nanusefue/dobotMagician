@@ -1,7 +1,5 @@
 import threading
 import DobotDllType as dType
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
 
 CON_STR = {
     dType.DobotConnect.DobotConnect_NoError:  "DobotConnect_NoError",

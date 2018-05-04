@@ -2,7 +2,9 @@
 Python lib for Dobot Magician 
 
 Install
-Qt5-default
+Qt5*
+libusb*
+libQt* 
 Qt5Serial-Dev
 qmake DobotDll.pro
 make
