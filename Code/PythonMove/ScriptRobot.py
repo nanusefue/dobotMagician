@@ -14,8 +14,8 @@ class ScriptRobot():
     dType.DobotConnect.DobotConnect_NotFound: "DobotConnect_NotFound",
     dType.DobotConnect.DobotConnect_Occupied: "DobotConnect_Occupied"}
     
-    def __init__(self,Json):
-        self.Json=Json
+    def __init__(self):
+        self.Json="data2.json"
         self.api=dType.load()
         self.state=""
 
