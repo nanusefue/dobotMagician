@@ -15,10 +15,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    return redirect('/json/list')
 
 
-@app.route('/form',methods=['GET', 'POST'])
+@app.route('/json/create',methods=['GET', 'POST'])
 def uploadXml():
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -35,7 +35,7 @@ def uploadXml():
             name=request.form['name']
             description=request.form['description']
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            insert('json', fields=('name','path','description'), values=(name,os.path.join(app.config['UPLOAD_FOLDER'], filename),description))
+            insert('json', fields=('name','filename','path','description'), values=(name,filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),description))
 
             return redirect(url_for('uploadXmlList',
                                     filename=filename))
@@ -44,7 +44,7 @@ def uploadXml():
 
 
 
-@app.route('/list')
+@app.route('/json/list')
 def uploadXmlList():
     if request.method == 'GET' :
         db =  get_db()
@@ -55,6 +55,43 @@ def uploadXmlList():
         cur.close()
 
     return render_template('uploadxmlist.html',lista=result)
+
+
+@app.route('/json/delete',methods=['GET'])
+def uploadXmlDelete():
+    if request.method == 'GET' :
+        _id=request.args.get('id')
+        path=request.args.get('path')
+        os.remove(os.path.join(path))
+        db =  get_db()
+        cur=db.cursor()
+        rv= db.execute('delete from json WHERE id = ?', [_id])
+        db.commit()
+        cur.close()
+
+    return redirect('/json/list')
+
+
+
+@app.route('/json/view',methods=['GET'])
+def uploadXmlView():
+    if request.method == 'GET' :
+        _id=request.args.get('id')
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from json WHERE id = ?', [_id])
+        result=rv.fetchone()
+        cur.close()
+        text = open(result['path'], 'r+')
+        content = text.read()
+        text.close()
+
+
+    return render_template('uploadxmview.html',lista=result,file=content)
+
+
+
 
 
 

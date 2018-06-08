@@ -140,6 +140,13 @@ body.hold-transition .main-header .logo {
   -o-transition: none;
   transition: none;
 }
+
+textarea {
+  width: 300px;
+  height: 150px;
+}
+
+
 /* Content */
 .content {
   min-height: 250px;
