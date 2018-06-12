@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block body %}
+ <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+          Json<small>View</small>
+      </h1>
+    
+    </section>
+  <!-- Main content -->
+    <section class="content">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">View</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Name</label>
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Name" value="{{lista.name}}">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" placeholder="Description" value="{{lista.description}}">
+                </div>
+
+              </div>
+
+               <div class="form-group">
+                  <label for="exampleInputEmail1">File</label>
+                  <textarea id="contentFile" rows="30" cols="50" name="description" class="form-control">{{file}}</textarea>
+
+                </div>
+
+
+              <!-- /.box-body -->
+               <div class="box-footer">
+                  <button onclick="prettyPrint()">Pretty Print</button>
+
+              </div>
+
+          </div>
+            </div>
+      </div>
+      <!-- /.row -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+<script type="text/javascript">
+  
+function prettyPrint() {
+    var ugly = document.getElementById('contentFile').value;
+    var obj = JSON.parse(ugly);
+    var pretty = JSON.stringify(obj, undefined, 4);
+    document.getElementById('contentFile').value = pretty;
+}
+
+</script>
+
+{% endblock %}

@@ -5,7 +5,14 @@ from flask import Flask, request,json,session,jsonify, g, redirect, url_for, abo
 from werkzeug.utils import secure_filename
 DATABASE = 'database/database.db'
 UPLOAD_FOLDER = 'uploads'
-ALLOWED_EXTENSIONS = set(['xml','json','txt'])
+ALLOWED_EXTENSIONS = set(['xml'])
+import time
+import datetime
+
+import sys
+sys.path.insert(0, 'script')
+
+from dobot_parser import ParserDobotMagicianExport
 
 #context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 #context.load_cert_chain('server.crt', 'server.key')
@@ -35,7 +42,7 @@ def uploadXml():
             name=request.form['name']
             description=request.form['description']
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            insert('json', fields=('name','filename','path','description'), values=(name,filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),description))
+            insert('json', fields=('name','filename','path','description','date'), values=(name,filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),description,datetime.datetime.now().strftime("%m-%d-%Y %H:%M")))
 
             return redirect(url_for('uploadXmlList',
                                     filename=filename))
@@ -91,7 +98,76 @@ def uploadXmlView():
     return render_template('uploadxmview.html',lista=result,file=content)
 
 
+@app.route('/dobot/create',methods=['GET'])
+def dobotCreate():
+    if request.method == 'GET' :
+        _id=request.args.get('id')
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from json WHERE id = ?', [_id])
+        result=rv.fetchone()
+        cur.close()
+        Parser = ParserDobotMagicianExport(result['path'],result['name'])
+        data=Parser.ParserXml()
+        with open(os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json'), 'w') as outfile:
+            json.dump(data, outfile)
 
+        filename=result['name']+".json"
+        insert('dobot', fields=('name','filename','path','description','date'), values=(result['name'],filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),result['description'],datetime.datetime.now().strftime("%m-%d-%Y %H:%M")))
+
+
+
+
+    return render_template('dobotcreate.html',lista=result)
+
+
+@app.route('/dobot/list')
+def dobotList():
+    if request.method == 'GET' :
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from dobot')
+        result=rv.fetchall()
+        cur.close()
+
+    return render_template('dobotlist.html',lista=result)
+
+@app.route('/dobot/view')
+def dobotView():
+    if request.method == 'GET' :
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from json')
+        result=rv.fetchall()
+        cur.close()
+
+    return render_template('dobotview.html',lista=result)
+
+@app.route('/dobot/run')
+def dobotRun():
+    if request.method == 'GET' :
+        Parser = ParserDobotMagicianExport(args.Xml, args.Json)
+        data=Parser.ParserXml()
+        result=Parser.GenerateJson(data)
+
+    return render_template('dobotview.html',lista=result)
+
+
+
+@app.route('/dobot/main')
+def dobotMain():
+    if request.method == 'GET' :
+        _id=request.args.get('id')
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])
+        result=rv.fetchall()
+        cur.close()
+    return render_template('dobotlist.html',lista=result)
 
 
 
