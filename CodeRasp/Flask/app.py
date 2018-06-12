@@ -137,14 +137,18 @@ def dobotList():
 @app.route('/dobot/view')
 def dobotView():
     if request.method == 'GET' :
+        _id=request.args.get('id')
         db =  get_db()
         db.row_factory = sqlite3.Row
         cur=db.cursor()
-        rv= db.execute('select * from json')
-        result=rv.fetchall()
+        rv= db.execute('select * from dobot WHERE id = ?', [_id])
+        result=rv.fetchone()
         cur.close()
+        text = open(result['path'], 'r+')
+        content = text.read()
+        text.close()
 
-    return render_template('dobotview.html',lista=result)
+    return render_template('dobotview.html',lista=result,file=content)
 
 @app.route('/dobot/run')
 def dobotRun():
@@ -165,10 +169,24 @@ def dobotMain():
         db.row_factory = sqlite3.Row
         cur=db.cursor()
         rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])
-        result=rv.fetchall()
+        db.commit()
         cur.close()
-    return render_template('dobotlist.html',lista=result)
+    return dobotList()
 
+
+@app.route('/dobot/delete',methods=['GET'])
+def dobotDelete():
+    if request.method == 'GET' :
+        _id=request.args.get('id')
+        path=request.args.get('path')
+        os.remove(os.path.join(path))
+        db =  get_db()
+        cur=db.cursor()
+        rv= db.execute('delete from dobot WHERE id = ?', [_id])
+        db.commit()
+        cur.close()
+
+    return redirect('/dobot/list')
 
 
 def get_db():

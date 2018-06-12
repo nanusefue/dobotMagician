@@ -44,10 +44,10 @@
                       <td>{{ entry['path'] }} </td>
                       <td>{{ entry['main'] }} </td>
                       <td>{{ entry['description']|safe }}</td>
-                      <td><a href="/json/view?id={{ entry.id }}"><i class="fa   fa-eye"></i></a>
+                      <td><a href="/dobot/view?id={{ entry.id }}"><i class="fa   fa-eye"></i></a>
                       <a href="/dobot/run?id={{entry.id}}"><i class="fa fa-cogs"></i> </a>                   
                       <a href="/dobot/main?id={{entry.id}}"><i class="fa fa-rocket"></i> </a>                   
-                      <a href="/json/delete?id={{ entry.id }}&path={{entry.path}}" onclick="if (confirm(&quot;Are you sure you wish to delete this template?&quot;)) { return true; } return false;"><i class="fa fa-trash"></i></a></td>                     
+                      <a href="/dobot/delete?id={{ entry.id }}&path={{entry.path}}" onclick="if (confirm(&quot;Are you sure you wish to delete this template?&quot;)) { return true; } return false;"><i class="fa fa-trash"></i></a></td>                     
                       </tr>
                   {% endfor %}                
 
