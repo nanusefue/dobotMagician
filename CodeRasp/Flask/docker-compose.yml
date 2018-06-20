@@ -1,0 +1,7 @@
+web:
+  build: .
+  container_name: flock
+  ports:
+    - "5000:5000"
+  volumes:
+    - .:/todo
