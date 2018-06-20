@@ -13,7 +13,7 @@ import sys
 sys.path.insert(0, 'script')
 
 from dobot_parser import ParserDobotMagicianExport
-from dobot_run import RunDobot
+from dobot_run import DobotRun
 
 #context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 #context.load_cert_chain('server.crt', 'server.key')
@@ -162,7 +162,7 @@ def dobotRun():
         result=rv.fetchone()
         cur.close()
         filename=os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json')
-        R = RunDobot(filename)
+        R = DobotRun(filename)
         R.Connect()
         R.ParserMove()
   
