@@ -13,6 +13,7 @@ import sys
 sys.path.insert(0, 'script')
 
 from dobot_parser import ParserDobotMagicianExport
+from dobot_run import RunDobot
 
 #context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 #context.load_cert_chain('server.crt', 'server.key')
@@ -153,10 +154,18 @@ def dobotView():
 @app.route('/dobot/run')
 def dobotRun():
     if request.method == 'GET' :
-        Parser = ParserDobotMagicianExport(args.Xml, args.Json)
-        data=Parser.ParserXml()
-        result=Parser.GenerateJson(data)
-
+        _id=request.args.get('id')
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from dobot WHERE id = ?', [_id])
+        result=rv.fetchone()
+        cur.close()
+        filename=os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json')
+        R = RunDobot(filename)
+        R.Connect()
+        R.ParserMove()
+  
     return render_template('dobotview.html',lista=result)
 
 

@@ -6,7 +6,7 @@ import json
 from pprint import pprint
 from collections import OrderedDict
 
-class ScriptRobot():
+class DobotRun():
 
     global CON_STR
     CON_STR = {
@@ -88,9 +88,6 @@ class ScriptRobot():
         dType.DisconnectDobot(self.api)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Script Robot')
-    parser.add_argument('--Json', required=True, help='File name export json')
-    args = parser.parse_args()
-    R = ScriptRobot(args.Json)
+    R = DobotRun(Json)
     R.Connect()
     R.ParserMove()
