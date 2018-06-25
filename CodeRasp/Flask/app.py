@@ -23,10 +23,10 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route("/")
 def hello():
-    return redirect('/json/list')
+    return redirect('/xml/list')
 
 
-@app.route('/json/create',methods=['GET', 'POST'])
+@app.route('/xml/create',methods=['GET', 'POST'])
 def uploadXml():
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -52,7 +52,7 @@ def uploadXml():
 
 
 
-@app.route('/json/list')
+@app.route('/xml/list')
 def uploadXmlList():
     if request.method == 'GET' :
         db =  get_db()
@@ -65,23 +65,30 @@ def uploadXmlList():
     return render_template('uploadxmlist.html',lista=result)
 
 
-@app.route('/json/delete',methods=['GET'])
+@app.route('/xml/delete',methods=['GET'])
 def uploadXmlDelete():
     if request.method == 'GET' :
         _id=request.args.get('id')
         path=request.args.get('path')
-        os.remove(os.path.join(path))
-        db =  get_db()
-        cur=db.cursor()
-        rv= db.execute('delete from json WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        try:
+            os.remove(os.path.join(path))
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from json WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
+        except:
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from json WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
 
-    return redirect('/json/list')
+    return redirect('/xml/list')
 
 
 
-@app.route('/json/view',methods=['GET'])
+@app.route('/xml/view',methods=['GET'])
 def uploadXmlView():
     if request.method == 'GET' :
         _id=request.args.get('id')
@@ -188,12 +195,19 @@ def dobotDelete():
     if request.method == 'GET' :
         _id=request.args.get('id')
         path=request.args.get('path')
-        os.remove(os.path.join(path))
-        db =  get_db()
-        cur=db.cursor()
-        rv= db.execute('delete from dobot WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        try:
+            os.remove(os.path.join(path))
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from dobot WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
+        except:
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from dobot WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
 
     return redirect('/dobot/list')
 

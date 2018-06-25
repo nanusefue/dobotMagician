@@ -18,7 +18,7 @@
         <div class="col-xs-12">
           <div class="box">
            <div class="box-header">
-                           <h3 class="box-title "><a class="btn btn-block btn-success" href="/json/create"><i class="fa  fa-cube"></i> Create</a></h3>
+                           <h3 class="box-title "><a class="btn btn-block btn-success" href="/xml/create"><i class="fa  fa-cube"></i> Create</a></h3>
 
             </div> 
             <!-- /.box-header -->
@@ -41,9 +41,9 @@
                       <td>{{ entry['date'] }} </td>
                       <td>{{ entry['path'] }} </td>
                       <td>{{ entry['description']|safe }}</td>
-                      <td><a href="/json/view?id={{ entry.id }}"><i class="fa   fa-eye"></i> </a>
+                      <td><a href="/xml/view?id={{ entry.id }}"><i class="fa   fa-eye"></i> </a>
                       <a href="/dobot/create?id={{entry.id}}"><i class="fa fa-cubes"></i> </a>                    
-                      <a href="/json/delete?id={{ entry.id }}&path={{entry.path}}" onclick="if (confirm(&quot;Are you sure you wish to delete this template?&quot;)) { return true; } return false;"><i class="fa fa-trash"></i></a></td>
+                      <a href="/xml/delete?id={{ entry.id }}&path={{entry.path}}" onclick="if (confirm(&quot;Are you sure you wish to delete this template?&quot;)) { return true; } return false;"><i class="fa fa-trash"></i></a></td>
                       </tr>
                   {% endfor %}                
 
