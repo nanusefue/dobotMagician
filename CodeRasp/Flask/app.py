@@ -5,9 +5,11 @@ from flask import Flask, request,json,session,jsonify, g, redirect, url_for, abo
 from werkzeug.utils import secure_filename
 DATABASE = 'database/database.db'
 UPLOAD_FOLDER = 'uploads'
+MAIN_FOLDER = 'main_run'
 ALLOWED_EXTENSIONS = set(['xml'])
 import time
 import datetime
+from shutil import copyfile
 
 import sys
 sys.path.insert(0, 'script')
@@ -20,6 +22,9 @@ from dobot_run import DobotRun
 import pprint
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAIN_FOLDER'] = MAIN_FOLDER
+app.secret_key = 'puig'
+
 
 @app.route("/")
 def hello():
@@ -123,11 +128,7 @@ def dobotCreate():
 
         filename=result['name']+".json"
         insert('dobot', fields=('name','filename','path','description','date'), values=(result['name'],filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),result['description'],datetime.datetime.now().strftime("%m-%d-%Y %H:%M")))
-
-
-
-
-    return render_template('dobotcreate.html',lista=result)
+    return redirect('/dobot/list')
 
 
 @app.route('/dobot/list')
@@ -181,12 +182,22 @@ def dobotRun():
 def dobotMain():
     if request.method == 'GET' :
         _id=request.args.get('id')
-        db =  get_db()
-        db.row_factory = sqlite3.Row
-        cur=db.cursor()
-        rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        try:
+            db =  get_db()
+            db.row_factory = sqlite3.Row
+            cur=db.cursor()
+            rv= db.execute('update dobot set main=0 WHERE id <> ?', [_id])
+            rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])        
+            rv= db.execute('select * from dobot WHERE id = ?', [_id])
+            result=rv.fetchone()
+            filename=os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json')
+            db.commit()
+            cur.close()
+            #os.remove(os.path.join(os.path.join(app.config['MAIN_FOLDER'],'data.json')))
+            copyfile(filename,app.config['MAIN_FOLDER']+'/data.json')
+        except:
+            flash('Update main file robot')
+    
     return dobotList()
 
 
@@ -195,8 +206,10 @@ def dobotDelete():
     if request.method == 'GET' :
         _id=request.args.get('id')
         path=request.args.get('path')
+        main=request.args.get('main')
         try:
             os.remove(os.path.join(path))
+            os.remove(os.path.join(app.config['MAIN_FOLDER'],'data.json'))
             db =  get_db()
             cur=db.cursor()
             rv= db.execute('delete from dobot WHERE id = ?', [_id])
