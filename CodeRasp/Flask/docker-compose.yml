@@ -1,6 +1,15 @@
 web:
+<<<<<<< HEAD
   build: ./
   ports:
    - "5000:5000"
   volumes:
    - .:/code
+=======
+  build: .
+  container_name: flock
+  ports:
+    - "5000:5000"
+  volumes:
+    - .:/todo
+>>>>>>> 7997471b89df127fb63efbf6b5ba2917f6b8ddd4

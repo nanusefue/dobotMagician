@@ -5,27 +5,33 @@ from flask import Flask, request,json,session,jsonify, g, redirect, url_for, abo
 from werkzeug.utils import secure_filename
 DATABASE = 'database/database.db'
 UPLOAD_FOLDER = 'uploads'
+MAIN_FOLDER = 'main_run'
 ALLOWED_EXTENSIONS = set(['xml'])
 import time
 import datetime
+from shutil import copyfile
 
 import sys
 sys.path.insert(0, 'script')
 
 from dobot_parser import ParserDobotMagicianExport
+from dobot_run import DobotRun
 
 #context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
 #context.load_cert_chain('server.crt', 'server.key')
 import pprint
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAIN_FOLDER'] = MAIN_FOLDER
+app.secret_key = 'puig'
+
 
 @app.route("/")
 def hello():
-    return redirect('/json/list')
+    return redirect('/xml/list')
 
 
-@app.route('/json/create',methods=['GET', 'POST'])
+@app.route('/xml/create',methods=['GET', 'POST'])
 def uploadXml():
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -51,7 +57,7 @@ def uploadXml():
 
 
 
-@app.route('/json/list')
+@app.route('/xml/list')
 def uploadXmlList():
     if request.method == 'GET' :
         db =  get_db()
@@ -64,23 +70,30 @@ def uploadXmlList():
     return render_template('uploadxmlist.html',lista=result)
 
 
-@app.route('/json/delete',methods=['GET'])
+@app.route('/xml/delete',methods=['GET'])
 def uploadXmlDelete():
     if request.method == 'GET' :
         _id=request.args.get('id')
         path=request.args.get('path')
-        os.remove(os.path.join(path))
-        db =  get_db()
-        cur=db.cursor()
-        rv= db.execute('delete from json WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        try:
+            os.remove(os.path.join(path))
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from json WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
+        except:
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from json WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
 
-    return redirect('/json/list')
+    return redirect('/xml/list')
 
 
 
-@app.route('/json/view',methods=['GET'])
+@app.route('/xml/view',methods=['GET'])
 def uploadXmlView():
     if request.method == 'GET' :
         _id=request.args.get('id')
@@ -115,11 +128,7 @@ def dobotCreate():
 
         filename=result['name']+".json"
         insert('dobot', fields=('name','filename','path','description','date'), values=(result['name'],filename,os.path.join(app.config['UPLOAD_FOLDER'], filename),result['description'],datetime.datetime.now().strftime("%m-%d-%Y %H:%M")))
-
-
-
-
-    return render_template('dobotcreate.html',lista=result)
+    return redirect('/dobot/list')
 
 
 @app.route('/dobot/list')
@@ -153,10 +162,18 @@ def dobotView():
 @app.route('/dobot/run')
 def dobotRun():
     if request.method == 'GET' :
-        Parser = ParserDobotMagicianExport(args.Xml, args.Json)
-        data=Parser.ParserXml()
-        result=Parser.GenerateJson(data)
-
+        _id=request.args.get('id')
+        db =  get_db()
+        db.row_factory = sqlite3.Row
+        cur=db.cursor()
+        rv= db.execute('select * from dobot WHERE id = ?', [_id])
+        result=rv.fetchone()
+        cur.close()
+        filename=os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json')
+        R = DobotRun(filename)
+        R.Connect()
+        R.ParserMove()
+  
     return render_template('dobotview.html',lista=result)
 
 
@@ -165,12 +182,22 @@ def dobotRun():
 def dobotMain():
     if request.method == 'GET' :
         _id=request.args.get('id')
-        db =  get_db()
-        db.row_factory = sqlite3.Row
-        cur=db.cursor()
-        rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        try:
+            db =  get_db()
+            db.row_factory = sqlite3.Row
+            cur=db.cursor()
+            rv= db.execute('update dobot set main=0 WHERE id <> ?', [_id])
+            rv= db.execute('update dobot set main=1 WHERE id = ?', [_id])        
+            rv= db.execute('select * from dobot WHERE id = ?', [_id])
+            result=rv.fetchone()
+            filename=os.path.join(app.config['UPLOAD_FOLDER'], result['name']+'.json')
+            db.commit()
+            cur.close()
+            #os.remove(os.path.join(os.path.join(app.config['MAIN_FOLDER'],'data.json')))
+            copyfile(filename,app.config['MAIN_FOLDER']+'/data.json')
+        except:
+            flash('Update main file robot')
+    
     return dobotList()
 
 
@@ -179,12 +206,21 @@ def dobotDelete():
     if request.method == 'GET' :
         _id=request.args.get('id')
         path=request.args.get('path')
-        os.remove(os.path.join(path))
-        db =  get_db()
-        cur=db.cursor()
-        rv= db.execute('delete from dobot WHERE id = ?', [_id])
-        db.commit()
-        cur.close()
+        main=request.args.get('main')
+        try:
+            os.remove(os.path.join(path))
+            os.remove(os.path.join(app.config['MAIN_FOLDER'],'data.json'))
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from dobot WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
+        except:
+            db =  get_db()
+            cur=db.cursor()
+            rv= db.execute('delete from dobot WHERE id = ?', [_id])
+            db.commit()
+            cur.close()
 
     return redirect('/dobot/list')
 
@@ -210,3 +246,6 @@ def insert(table, fields=(), values=()):
     db.commit()
     id = cur.lastrowid
     cur.close()
+
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
