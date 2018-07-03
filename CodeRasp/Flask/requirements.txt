@@ -1,2 +1,2 @@
-Flask
-pysqlite
+Flask==0.10.1
+pysqlite3
