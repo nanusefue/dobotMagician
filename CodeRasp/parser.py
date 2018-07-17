@@ -8,14 +8,20 @@ class ParserDobotMagicianExport():
 	def __init__(self, Xml, Json):
 		self.Xml = Xml
 		self.Json = Json
+"""Falta por implementar movimientos del robot"""
 
 	def moveType(self,value):
 		return {
+			'0': "JUMPXYZ",
 			'1': "MOVJ",
 			'2': "MOVL",
-			'3': "UNKOWN",
-			'4': "ARC",
-
+			'3': "JUMPANGLE",
+			'4': "MOVJANGLE",
+			'5': "MOVLANGLE",
+			'6': "MOVJANGLEINC",
+			'7': "MOVLXYZIN",
+			'8': "MOVJXYZIN",
+			'9': "JUMPMOVL"
 		}[value]
 
 	def GenerateJson(self,data):

@@ -1,0 +1,15 @@
+[Unit]
+Description=Flask app 
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/bash -u run.sh
+WorkingDirectory=/home/pi/flask
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+

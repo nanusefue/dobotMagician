@@ -65,15 +65,13 @@ class ScriptRobot():
             if data[move]['PauseTime']!=0:
                 lastIndex=dType.SetWAITCmd(self.api,float(data[move]['PauseTime']), isQueued = 1)[0]
             if data[move]['MotionStyle']=="MOVJ" :
-                #lastIndex=dType.SetPTPCommonParams(self.api,10, 10,isQueued = 1)[0]
                 lastIndex=dType.SetPTPCmd(self.api,dType.PTPMode.PTPMOVJXYZMode,float(data[move]['X']),float(data[move]['Y']),float(data[move]['Z']),float(data[move]['R']), isQueued = 1)[0]
             if data[move]['MotionStyle']=="MOVL" :        
-                #lastIndex=dType.SetPTPCommonParams(self.api, 200, 200,isQueued = 1)[0]
                 lastIndex=dType.SetPTPCmd(self.api,dType.PTPMode.PTPMOVLXYZMode,float(data[move]['X']),float(data[move]['Y']),float(data[move]['Z']),float(data[move]['R']), isQueued = 1)[0]
-            if data[move]['MotionStyle']=="ARC" :        
-                #lastIndex=dType.SetWAITCmd(self.api, 1, isQueued=1)[0] 
-                #lastIndex=dType.SetARCParams(self.api, 200, 200, 200, 200,  isQueued=1)[0]
+            if data[move]['MotionStyle']=="MOVJANGLE" :        
                 lastIndex=dType.SetARCCmd(self.api,[float(data[move]['X']),float(data[move]['Y']),float(data[move]['Z']),0],[float(data[move]['_X']),float(data[move]['_Y']),float(data[move]['_Z']),0], isQueued = 1)[0]
+
+
 
         dType.SetQueuedCmdStartExec(self.api)
 
