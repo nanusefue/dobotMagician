@@ -95,8 +95,6 @@ class DobotRun():
 
         #dType.SetQueuedCmdStopExec(self.api)
         dType.GetKinematics(self.api)
-
-
         dType.DisconnectDobot(self.api)
 
 if __name__ == "__main__":

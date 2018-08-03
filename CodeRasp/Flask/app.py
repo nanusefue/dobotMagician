@@ -174,7 +174,7 @@ def dobotRun():
         R.Connect()
         R.ParserMove()
   
-    return render_template('dobotview.html',lista=result)
+    return redirect('/dobot/list')
 
 
 
