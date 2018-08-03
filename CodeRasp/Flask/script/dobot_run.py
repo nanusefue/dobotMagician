@@ -81,10 +81,8 @@ class DobotRun():
 #           dType.GetPose(self.api) Obtener la Posicion actual del robot
             dType.dSleep(100)
 
-        dType.SetQueuedCmdStopExec(self.api)
+        #dType.SetQueuedCmdStopExec(self.api)
         dType.GetKinematics(self.api)
-
-
         dType.DisconnectDobot(self.api)
 
 if __name__ == "__main__":
