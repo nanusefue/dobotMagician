@@ -5,7 +5,7 @@ import argparse
 import json
 from pprint import pprint
 from collections import OrderedDict
-import sys
+
 class DobotRun():
 
     global CON_STR
@@ -21,19 +21,7 @@ class DobotRun():
 
     def Connect(self):
         #Connect Dobot
-        self.state=dType.SearchDobot(self.api,10)
-        if not self.state :
-          print("Empty")
-          dType.DisconnectDobot(self.api)
-
         self.state = dType.ConnectDobot(self.api, "", 115200)[0]
-        print(CON_STR[self.state])
-
-        if (CON_STR[self.state] == "DobotConnect_NotFound" ):
-           print("Error")		
-           dType.DisconnectDobot(self.api)
-           sys.exit("Please connect the Robot")
-           return False
         dType.GetDeviceSN(self.api)
         dType.GetDeviceName(self.api)
         dType.GetDeviceVersion(self.api)
@@ -93,13 +81,13 @@ class DobotRun():
 #           dType.GetPose(self.api) Obtener la Posicion actual del robot
             dType.dSleep(100)
 
-        #dType.SetQueuedCmdStopExec(self.api)
+        dType.SetQueuedCmdStopExec(self.api)
         dType.GetKinematics(self.api)
 
 
         dType.DisconnectDobot(self.api)
 
 if __name__ == "__main__":
-    R = DobotRun(Json)
+    R = DobotRun("../parser.json")
     R.Connect()
     R.ParserMove()
