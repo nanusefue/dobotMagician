@@ -3,8 +3,8 @@ Description=Flask app
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/bash -u run.sh
-WorkingDirectory=/home/pi/flask
+ExecStart=/bin/bash -u run.sh
+WorkingDirectory=/home/pi/dobotMagician/CodeRasp/Flask
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
